@@ -46,7 +46,6 @@ namespace ReliableNetcode
 
                 fragmentBytes -= headerBytes;
 
-                
                 BufferPool.ReturnBuffer(packetHeader);
             }
 
