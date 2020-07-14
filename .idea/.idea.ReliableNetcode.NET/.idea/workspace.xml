@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="SCOPE_TYPE" value="3" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="5d4fea2a-6580-4f3f-97d3-89114d49da7b" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/ReliableNetcode.NETCore/Utils/Defines.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ReliableNetcode.NETCore/Utils/IO/ByteArrayReader.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ReliableNetcode.NETCoreTests/UnitTest1.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ReliableNetcode.NETCore/Utils/IO/ByteStream.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ReliableNetcode.NETCore/Utils/ObjPool.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ReliableNetcode.NETCore/QosType.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ReliableNetcode.NETCore/Utils/BufferPool.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ReliableNetcode.NETCore/MessageChannel.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ReliableNetcode.NETCore/SequenceBuffer.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ReliableNetcode.NETCore/PacketHeader.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ReliableNetcode.NETCore/ReliablePacketController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ReliableNetcode.NETCore/ReliableEndpoint.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/ReliableNetcode.NETCore/Utils/IO/PacketIO.cs" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/ReliableNetcode/SequenceBuffer.cs" />
+        <option value="$PROJECT_DIR$/ReliableNetcode.NETCore/Class1.cs" />
+        <option value="$PROJECT_DIR$/ReliableNetcode.NETCore/MessageChannel.cs" />
+        <option value="$PROJECT_DIR$/ReliableNetcode.NETCoreTests/UnitTest1.cs" />
+        <option value="$PROJECT_DIR$/ReliableNetcode.NETCore/ReliableEndpoint.cs" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectId" id="1ecugzLj6QLh9l2uVAgSFpy93Cq" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.appearance" />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5d4fea2a-6580-4f3f-97d3-89114d49da7b" name="Default Changelist" comment="" />
+      <created>1594633317753</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1594633317753</updated>
+      <workItem from="1594633331829" duration="4357000" />
+    </task>
+    <servers />
+  </component>
+  <component name="UnityProjectConfiguration" hasMinimizedUI="null" />
+  <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
+  <component name="VcsManagerConfiguration">
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="749" y="399" key="ANALYSIS_DLG_com.jetbrains.rider.actions.impl.cleanup.RiderCodeCleanupAction$actionPerformed$dlg$1" timestamp="1594641447311">
+      <screen x="62" y="0" width="1858" height="1080" />
+    </state>
+    <state x="749" y="399" key="ANALYSIS_DLG_com.jetbrains.rider.actions.impl.cleanup.RiderCodeCleanupAction$actionPerformed$dlg$1/-1858.-3.1858.1080/62.0.1858.1080@62.0.1858.1080" timestamp="1594641447311" />
+    <state x="583" y="271" key="Rider.ProjectTemplateDialog.Size" timestamp="1594640650113">
+      <screen x="62" y="0" width="1858" height="1080" />
+    </state>
+    <state x="583" y="271" key="Rider.ProjectTemplateDialog.Size/-1858.-3.1858.1080/62.0.1858.1080@62.0.1858.1080" timestamp="1594640650113" />
+  </component>
+</project>
