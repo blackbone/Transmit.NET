@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using ReliableNetcode;
@@ -6,7 +6,7 @@ using ReliableNetcode;
 namespace UnitTestProject1
 {
     [TestFixture]
-    public class UnitTest1
+    public class UnitTest2
     {
         // tests with randomness are run this many times to ensure tests are unlikely to randomly pass
         private const int RANDOM_RUNS = 100;
@@ -20,6 +20,12 @@ namespace UnitTestProject1
             var sentPackets = new List<byte>();
             var receivedPackets = new List<byte>();
 
+            var endpoint1 = new ReliableEndpoint();
+            var endpoint2 = new ReliableEndpoint();
+            
+            endpoint1.tr
+
+            
             var endpoint1 = new ReliableEndpoint
             {
                 ReceiveCallback = (buffer, size) =>

@@ -30,9 +30,15 @@ namespace ReliableNetcode
         // Index, buffer, bufferLength
         public Action<uint, byte[], int> TransmitExtendedCallback;
 
-        public ReliableEndpoint()
+        public ReliableEndpoint(params QosType[] channelsConfig)
         {
             time = DateTime.Now.GetTotalSeconds();
+
+            messageChannels = new MessageChannel[channelsConfig.Length];
+            for (int i = 0, len = channelsConfig.Length; i < len; ++i)
+            {
+                messageChannels[i] = CreateChannel(channelsConfig[i]);
+            }
 
             _reliableChannel = new ReliableMessageChannel
                 {TransmitCallback = transmitMessage, ReceiveCallback = receiveMessage};
@@ -41,8 +47,7 @@ namespace ReliableNetcode
             {
                 _reliableChannel,
                 new UnreliableMessageChannel {TransmitCallback = transmitMessage, ReceiveCallback = receiveMessage},
-                new UnreliableOrderedMessageChannel
-                    {TransmitCallback = transmitMessage, ReceiveCallback = receiveMessage}
+                new UnreliableOrderedMessageChannel {TransmitCallback = transmitMessage, ReceiveCallback = receiveMessage}
             };
         }
 
