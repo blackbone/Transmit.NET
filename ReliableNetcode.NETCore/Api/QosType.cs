@@ -6,9 +6,9 @@
     public enum QosType : byte
     {
         /// <summary>
-        ///     Message is guaranteed to arrive and in order
+        ///     Message is not created or not recognized
         /// </summary>
-        Reliable = 0,
+        None = 0,
 
         /// <summary>
         ///     Message is not guaranteed delivery nor order
@@ -16,8 +16,18 @@
         Unreliable = 1,
 
         /// <summary>
+        ///     Message is guaranteed to arrive but order is not guaranteed
+        /// </summary>
+        Reliable = 2,
+
+        /// <summary>
         ///     Message is not guaranteed delivery, but will be in order
         /// </summary>
-        UnreliableOrdered = 2
+        UnreliableOrdered = 3,
+
+        /// <summary>
+        ///     Message is guaranteed to arrive adn in order
+        /// </summary>
+        ReliableOrdered = 4
     }
 }

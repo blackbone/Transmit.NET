@@ -1,125 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using ReliableNetcode.Utils;
 
 namespace ReliableNetcode
 {
-    internal abstract class MessageChannel
-    {
-        public Action<byte[], int> ReceiveCallback;
-
-        public Action<byte[], int> TransmitCallback;
-        public abstract int ChannelID { get; }
-
-        public abstract void Reset();
-        public abstract void Update(double newTime);
-        public abstract void ReceivePacket(byte[] buffer, int bufferLength);
-        public abstract void SendMessage(byte[] buffer, int bufferLength);
-    }
-
-    // an unreliable implementation of MessageChannel
-    // does not make any guarantees about message reliability except for ignoring duplicate messages
-    internal class UnreliableMessageChannel : MessageChannel
-    {
-        private readonly ReliableConfig config;
-        private readonly ReliablePacketController packetController;
-        private readonly SequenceBuffer<ReceivedPacketData> receiveBuffer;
-
-        public UnreliableMessageChannel()
-        {
-            receiveBuffer = new SequenceBuffer<ReceivedPacketData>(256);
-
-            config = ReliableConfig.DefaultConfig();
-            config.TransmitPacketCallback = (buffer, size) => { TransmitCallback(buffer, size); };
-            config.ProcessPacketCallback = (seq, buffer, size) =>
-            {
-                if (!receiveBuffer.Exists(seq))
-                {
-                    receiveBuffer.Insert(seq);
-                    ReceiveCallback(buffer, size);
-                }
-            };
-
-            packetController = new ReliablePacketController(config, DateTime.Now.GetTotalSeconds());
-        }
-
-        public override int ChannelID => (int) QosType.Unreliable;
-
-        public override void Reset()
-        {
-            packetController.Reset();
-        }
-
-        public override void Update(double newTime)
-        {
-            packetController.Update(newTime);
-        }
-
-        public override void ReceivePacket(byte[] buffer, int bufferLength)
-        {
-            packetController.ReceivePacket(buffer, bufferLength);
-        }
-
-        public override void SendMessage(byte[] buffer, int bufferLength)
-        {
-            packetController.SendPacket(buffer, bufferLength, (byte) ChannelID);
-        }
-    }
-
-    // an unreliable-ordered implementation of MessageChannel
-    // does not make any guarantees that a message will arrive, BUT does guarantee that messages will be received in chronological order
-    internal class UnreliableOrderedMessageChannel : MessageChannel
-    {
-        private readonly ReliableConfig config;
-        private readonly ReliablePacketController packetController;
-
-        private ushort nextSequence;
-
-        public UnreliableOrderedMessageChannel()
-        {
-            config = ReliableConfig.DefaultConfig();
-            config.TransmitPacketCallback = (buffer, size) => { TransmitCallback(buffer, size); };
-            config.ProcessPacketCallback = processPacket;
-
-            packetController = new ReliablePacketController(config, DateTime.Now.GetTotalSeconds());
-        }
-
-        public override int ChannelID => (int) QosType.UnreliableOrdered;
-
-        public override void Reset()
-        {
-            nextSequence = 0;
-            packetController.Reset();
-        }
-
-        public override void Update(double newTime)
-        {
-            packetController.Update(newTime);
-        }
-
-        public override void ReceivePacket(byte[] buffer, int bufferLength)
-        {
-            packetController.ReceivePacket(buffer, bufferLength);
-        }
-
-        public override void SendMessage(byte[] buffer, int bufferLength)
-        {
-            packetController.SendPacket(buffer, bufferLength, (byte) ChannelID);
-        }
-
-        protected void processPacket(ushort sequence, byte[] buffer, int length)
-        {
-            // only process a packet if it is the next packet we expect, or it is newer.
-            if (sequence == nextSequence || PacketIO.SequenceGreaterThan(sequence, nextSequence))
-            {
-                nextSequence = (ushort) (sequence + 1);
-                ReceiveCallback(buffer, length);
-            }
-        }
-    }
-
-    // a reliable ordered implementation of MessageChannel
-    internal class ReliableMessageChannel : MessageChannel
+    internal sealed class ReliableMessageChannel : MessageChannel
     {
         private readonly SequenceBuffer<OutgoingPacketSet> ackBuffer;
 
@@ -146,7 +31,7 @@ namespace ReliableNetcode
         protected List<ushort> tempList = new List<ushort>();
         private double time;
 
-        public ReliableMessageChannel()
+        public ReliableMessageChannel(int channelId) : base(channelId)
         {
             config = ReliableConfig.DefaultConfig();
             config.TransmitPacketCallback = (buffer, size) => { TransmitCallback(buffer, size); };
@@ -168,8 +53,6 @@ namespace ReliableNetcode
             nextReceive = 0;
             oldestUnacked = 0;
         }
-
-        public override int ChannelID => (int) QosType.Reliable;
 
         public float RTT => packetController.RTT;
 

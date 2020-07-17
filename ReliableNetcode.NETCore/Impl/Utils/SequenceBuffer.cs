@@ -2,107 +2,107 @@
 
 namespace ReliableNetcode
 {
-    internal class SequenceBuffer<T> where T : class, new()
+    internal sealed class SequenceBuffer<T> where T : class, new()
     {
-        private const uint NULL_SEQUENCE = 0xFFFFFFFF;
-        private readonly T[] entryData;
-        private readonly uint[] entrySequence;
+        private const uint NullSequence = 0xFFFFFFFF;
+        private readonly T[] _entryData;
+        private readonly uint[] _entrySequence;
 
-        public ushort sequence;
+        public ushort Sequence;
 
         public SequenceBuffer(int bufferSize)
         {
-            sequence = 0;
+            Sequence = 0;
             Size = bufferSize;
 
-            entrySequence = new uint[bufferSize];
+            _entrySequence = new uint[bufferSize];
             for (var i = 0; i < bufferSize; i++)
-                entrySequence[i] = NULL_SEQUENCE;
+                _entrySequence[i] = NullSequence;
 
-            entryData = new T[bufferSize];
+            _entryData = new T[bufferSize];
             for (var i = 0; i < bufferSize; i++)
-                entryData[i] = new T();
+                _entryData[i] = new T();
         }
 
         public int Size { get; }
 
         public void Reset()
         {
-            sequence = 0;
+            Sequence = 0;
             for (var i = 0; i < Size; i++)
-                entrySequence[i] = NULL_SEQUENCE;
+                _entrySequence[i] = NullSequence;
         }
 
-        public void RemoveEntries(int startSequence, int finishSequence)
+        private void RemoveEntries(int startSequence, int finishSequence)
         {
             if (finishSequence < startSequence)
                 finishSequence += 65536;
 
             if (finishSequence - startSequence < Size)
                 for (var sequence = startSequence; sequence <= finishSequence; sequence++)
-                    entrySequence[sequence % Size] = NULL_SEQUENCE;
+                    _entrySequence[sequence % Size] = NullSequence;
             else
                 for (var i = 0; i < Size; i++)
-                    entrySequence[i] = NULL_SEQUENCE;
+                    _entrySequence[i] = NullSequence;
         }
 
         public bool TestInsert(ushort sequence)
         {
-            return !PacketIO.SequenceLessThan(sequence, (ushort) (this.sequence - Size));
+            return !PacketIO.SequenceLessThan(sequence, (ushort) (this.Sequence - Size));
         }
 
         public T Insert(ushort sequence)
         {
-            if (PacketIO.SequenceLessThan(sequence, (ushort) (this.sequence - Size)))
+            if (PacketIO.SequenceLessThan(sequence, (ushort) (this.Sequence - Size)))
                 return null;
 
-            if (PacketIO.SequenceGreaterThan((ushort) (sequence + 1), this.sequence))
+            if (PacketIO.SequenceGreaterThan((ushort) (sequence + 1), this.Sequence))
             {
-                RemoveEntries(this.sequence, sequence);
-                this.sequence = (ushort) (sequence + 1);
+                RemoveEntries(this.Sequence, sequence);
+                this.Sequence = (ushort) (sequence + 1);
             }
 
             var index = sequence % Size;
-            entrySequence[index] = sequence;
-            return entryData[index];
+            _entrySequence[index] = sequence;
+            return _entryData[index];
         }
 
         public void Remove(ushort sequence)
         {
-            entrySequence[sequence % Size] = NULL_SEQUENCE;
+            _entrySequence[sequence % Size] = NullSequence;
         }
 
         public bool Available(ushort sequence)
         {
-            return entrySequence[sequence % Size] == NULL_SEQUENCE;
+            return _entrySequence[sequence % Size] == NullSequence;
         }
 
         public bool Exists(ushort sequence)
         {
-            return entrySequence[sequence % Size] == sequence;
+            return _entrySequence[sequence % Size] == sequence;
         }
 
         public T Find(ushort sequence)
         {
             var index = sequence % Size;
-            var sequenceNum = entrySequence[index];
+            var sequenceNum = _entrySequence[index];
             if (sequenceNum == sequence)
-                return entryData[index];
+                return _entryData[index];
             return null;
         }
 
         public T AtIndex(int index)
         {
-            var sequenceNum = entrySequence[index];
-            if (sequenceNum == NULL_SEQUENCE)
+            var sequenceNum = _entrySequence[index];
+            if (sequenceNum == NullSequence)
                 return null;
 
-            return entryData[index];
+            return _entryData[index];
         }
 
         public void GenerateAckBits(out ushort ack, out uint ackBits)
         {
-            ack = (ushort) (this.sequence - 1);
+            ack = (ushort) (this.Sequence - 1);
             ackBits = 0;
 
             uint mask = 1;

@@ -98,7 +98,7 @@ namespace ReliableNetcode
 
             // calculate packet loss
             {
-                var baseSequence = (uint) (sentPackets.sequence - config.SentPacketBufferSize + 1 + 0xFFFF);
+                var baseSequence = (uint) (sentPackets.Sequence - config.SentPacketBufferSize + 1 + 0xFFFF);
 
                 var numDropped = 0;
                 var numSamples = config.SentPacketBufferSize / 2;
@@ -119,7 +119,7 @@ namespace ReliableNetcode
 
             // calculate sent bandwidth
             {
-                var baseSequence = (uint) (sentPackets.sequence - config.SentPacketBufferSize + 1 + 0xFFFF);
+                var baseSequence = (uint) (sentPackets.Sequence - config.SentPacketBufferSize + 1 + 0xFFFF);
 
                 var bytesSent = 0;
                 var startTime = double.MaxValue;
@@ -149,7 +149,7 @@ namespace ReliableNetcode
             // calculate received bandwidth
             lock (receivedPackets)
             {
-                var baseSequence = (uint) (receivedPackets.sequence - config.ReceivedPacketBufferSize + 1 + 0xFFFF);
+                var baseSequence = (uint) (receivedPackets.Sequence - config.ReceivedPacketBufferSize + 1 + 0xFFFF);
 
                 var bytesReceived = 0;
                 var startTime = double.MaxValue;
@@ -179,7 +179,7 @@ namespace ReliableNetcode
 
             // calculate acked bandwidth
             {
-                var baseSequence = (uint) (sentPackets.sequence - config.SentPacketBufferSize + 1 + 0xFFFF);
+                var baseSequence = (uint) (sentPackets.Sequence - config.SentPacketBufferSize + 1 + 0xFFFF);
 
                 var bytesSent = 0;
                 var startTime = double.MaxValue;
@@ -228,8 +228,7 @@ namespace ReliableNetcode
         public ushort SendPacket(byte[] packetData, int length, byte channelID)
         {
             if (length > config.MaxPacketSize)
-                throw new ArgumentOutOfRangeException("Packet is too large to send, max packet size is " +
-                                                      config.MaxPacketSize + " bytes");
+                throw new ArgumentOutOfRangeException($"Packet is too large to send, max packet size is {config.MaxPacketSize} bytes");
 
             var sequence = this.sequence++;
             ushort ack;
@@ -311,10 +310,8 @@ namespace ReliableNetcode
         {
             if (bufferLength > config.MaxPacketSize)
                 throw new ArgumentOutOfRangeException("Packet is larger than max packet size");
-
             if (packetData == null)
                 throw new InvalidOperationException("Tried to receive null packet!");
-
             if (bufferLength > packetData.Length)
                 throw new InvalidOperationException("Buffer length exceeds actual packet length!");
 
