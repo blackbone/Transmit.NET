@@ -4,27 +4,28 @@ using System.IO;
 
 namespace ReliableNetcode.Utils
 {
-	/// <summary>
-	///     Helper class for a quick non-allocating way to read or write from/to temporary byte arrays as streams
-	/// </summary>
-	public class ByteArrayReaderWriter : IDisposable
+    /// <inheritdoc />
+    /// <summary>
+    ///     Helper class for a quick non-allocating way to read or write from/to temporary byte arrays as streams
+    /// </summary>
+    public sealed class ByteArrayReaderWriter : IDisposable
     {
-        protected static Queue<ByteArrayReaderWriter> readerPool = new Queue<ByteArrayReaderWriter>();
+        private static readonly Queue<ByteArrayReaderWriter> ReaderPool = new Queue<ByteArrayReaderWriter>();
 
-        protected ByteStream readStream;
-        protected ByteStream writeStream;
+        private readonly ByteStream _readStream;
+        private readonly ByteStream _writeStream;
 
         public ByteArrayReaderWriter()
         {
-            readStream = new ByteStream();
-            writeStream = new ByteStream();
+            _readStream = new ByteStream();
+            _writeStream = new ByteStream();
         }
 
-        public long ReadPosition => readStream.Position;
+        internal long ReadPosition => _readStream.Position;
 
-        public bool IsDoneReading => readStream.Position >= readStream.Length;
+        internal bool IsDoneReading => _readStream.Position >= _readStream.Length;
 
-        public long WritePosition => writeStream.Position;
+        internal long WritePosition => _writeStream.Position;
 
         public void Dispose()
         {
@@ -34,14 +35,14 @@ namespace ReliableNetcode.Utils
         /// <summary>
         ///     Get a reader/writer for the given byte array
         /// </summary>
-        public static ByteArrayReaderWriter Get(byte[] byteArray)
+        internal static ByteArrayReaderWriter Get(byte[] byteArray)
         {
             ByteArrayReaderWriter reader = null;
 
-            lock (readerPool)
+            lock (ReaderPool)
             {
-                if (readerPool.Count > 0)
-                    reader = readerPool.Dequeue();
+                if (ReaderPool.Count > 0)
+                    reader = ReaderPool.Dequeue();
                 else
                     reader = new ByteArrayReaderWriter();
             }
@@ -53,191 +54,191 @@ namespace ReliableNetcode.Utils
         /// <summary>
         ///     Release a reader/writer to the pool
         /// </summary>
-        public static void Release(ByteArrayReaderWriter reader)
+        private static void Release(ByteArrayReaderWriter reader)
         {
-            lock (readerPool)
+            lock (ReaderPool)
             {
-                readerPool.Enqueue(reader);
+                ReaderPool.Enqueue(reader);
             }
         }
 
-        public void SetStream(byte[] byteArray)
+        private void SetStream(byte[] byteArray)
         {
-            readStream.SetStreamSource(byteArray);
-            writeStream.SetStreamSource(byteArray);
+            _readStream.SetStreamSource(byteArray);
+            _writeStream.SetStreamSource(byteArray);
         }
 
-        public void SeekRead(long pos)
+        internal void SeekRead(long pos)
         {
-            readStream.Seek(pos, SeekOrigin.Begin);
+            _readStream.Seek(pos, SeekOrigin.Begin);
         }
 
-        public void SeekWrite(long pos)
+        internal void SeekWrite(long pos)
         {
-            writeStream.Seek(pos, SeekOrigin.Begin);
+            _writeStream.Seek(pos, SeekOrigin.Begin);
         }
 
-        public void Write(byte val)
+        internal void Write(byte val)
         {
-            writeStream.Write(val);
+            _writeStream.Write(val);
         }
 
-        public void Write(byte[] val)
+        internal void Write(byte[] val)
         {
-            writeStream.Write(val);
+            _writeStream.Write(val);
         }
 
-        public void Write(char val)
+        internal void Write(char val)
         {
-            writeStream.Write(val);
+            _writeStream.Write(val);
         }
 
-        public void Write(char[] val)
+        internal void Write(char[] val)
         {
-            writeStream.Write(val);
+            _writeStream.Write(val);
         }
 
-        public void Write(string val)
+        internal void Write(string val)
         {
-            writeStream.Write(val);
+            _writeStream.Write(val);
         }
 
-        public void Write(short val)
+        internal void Write(short val)
         {
-            writeStream.Write(val);
+            _writeStream.Write(val);
         }
 
-        public void Write(int val)
+        internal void Write(int val)
         {
-            writeStream.Write(val);
+            _writeStream.Write(val);
         }
 
-        public void Write(long val)
+        internal void Write(long val)
         {
-            writeStream.Write(val);
+            _writeStream.Write(val);
         }
 
-        public void Write(ushort val)
+        internal void Write(ushort val)
         {
-            writeStream.Write(val);
+            _writeStream.Write(val);
         }
 
-        public void Write(uint val)
+        internal void Write(uint val)
         {
-            writeStream.Write(val);
+            _writeStream.Write(val);
         }
 
-        public void Write(ulong val)
+        internal void Write(ulong val)
         {
-            writeStream.Write(val);
+            _writeStream.Write(val);
         }
 
-        public void Write(float val)
+        internal void Write(float val)
         {
-            writeStream.Write(val);
+            _writeStream.Write(val);
         }
 
-        public void Write(double val)
+        internal void Write(double val)
         {
-            writeStream.Write(val);
+            _writeStream.Write(val);
         }
 
-        public void WriteASCII(char[] chars)
+        internal void WriteASCII(char[] chars)
         {
-            for (var i = 0; i < chars.Length; i++)
+            for (int i = 0, len = chars.Length; i < len; i++)
             {
                 var asciiCode = (byte) (chars[i] & 0xFF);
                 Write(asciiCode);
             }
         }
 
-        public void WriteASCII(string str)
+        internal void WriteASCII(string str)
         {
-            for (var i = 0; i < str.Length; i++)
+            for (int i = 0, len = str.Length; i < len; i++)
             {
                 var asciiCode = (byte) (str[i] & 0xFF);
                 Write(asciiCode);
             }
         }
 
-        public void WriteBuffer(byte[] buffer, int length)
+        internal void WriteBuffer(byte[] buffer, int length)
         {
             for (var i = 0; i < length; i++)
                 Write(buffer[i]);
         }
 
-        public byte ReadByte()
+        internal byte ReadByte()
         {
-            return readStream.ReadByte();
+            return _readStream.ReadByte();
         }
 
-        public byte[] ReadBytes(int length)
+        internal byte[] ReadBytes(int length)
         {
-            return readStream.ReadBytes(length);
+            return _readStream.ReadBytes(length);
         }
 
-        public char ReadChar()
+        internal char ReadChar()
         {
-            return readStream.ReadChar();
+            return _readStream.ReadChar();
         }
 
-        public char[] ReadChars(int length)
+        internal char[] ReadChars(int length)
         {
-            return readStream.ReadChars(length);
+            return _readStream.ReadChars(length);
         }
 
-        public string ReadString()
+        internal string ReadString()
         {
-            return readStream.ReadString();
+            return _readStream.ReadString();
         }
 
-        public short ReadInt16()
+        internal short ReadInt16()
         {
-            return readStream.ReadInt16();
+            return _readStream.ReadInt16();
         }
 
-        public int ReadInt32()
+        internal int ReadInt32()
         {
-            return readStream.ReadInt32();
+            return _readStream.ReadInt32();
         }
 
-        public long ReadInt64()
+        internal long ReadInt64()
         {
-            return readStream.ReadInt64();
+            return _readStream.ReadInt64();
         }
 
-        public ushort ReadUInt16()
+        internal ushort ReadUInt16()
         {
-            return readStream.ReadUInt16();
+            return _readStream.ReadUInt16();
         }
 
-        public uint ReadUInt32()
+        internal uint ReadUInt32()
         {
-            return readStream.ReadUInt32();
+            return _readStream.ReadUInt32();
         }
 
-        public ulong ReadUInt64()
+        internal ulong ReadUInt64()
         {
-            return readStream.ReadUInt64();
+            return _readStream.ReadUInt64();
         }
 
-        public float ReadSingle()
+        internal float ReadSingle()
         {
-            return readStream.ReadSingle();
+            return _readStream.ReadSingle();
         }
 
-        public double ReadDouble()
+        internal double ReadDouble()
         {
-            return readStream.ReadDouble();
+            return _readStream.ReadDouble();
         }
 
-        public void ReadASCIICharsIntoBuffer(char[] buffer, int length)
+        internal void ReadASCIICharsIntoBuffer(char[] buffer, int length)
         {
             for (var i = 0; i < length; i++)
                 buffer[i] = (char) ReadByte();
         }
 
-        public void ReadBytesIntoBuffer(byte[] buffer, int length)
+        internal void ReadBytesIntoBuffer(byte[] buffer, int length)
         {
             for (var i = 0; i < length; i++)
                 buffer[i] = ReadByte();

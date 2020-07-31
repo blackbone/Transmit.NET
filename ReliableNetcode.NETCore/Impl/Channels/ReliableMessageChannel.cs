@@ -54,14 +54,6 @@ namespace ReliableNetcode
             oldestUnacked = 0;
         }
 
-        public float RTT => packetController.RTT;
-
-        public float PacketLoss => packetController.PacketLoss;
-
-        public float SentBandwidthKBPS => packetController.SentBandwidthKBPS;
-
-        public float ReceivedBandwidthKBPS => packetController.ReceivedBandwidthKBPS;
-
         public override void Reset()
         {
             packetController.Reset();
@@ -91,7 +83,7 @@ namespace ReliableNetcode
             if (messageQueue.Count > 0)
             {
                 var sendBufferSize = 0;
-                for (var seq = oldestUnacked; PacketIO.SequenceLessThan(seq, sequence); seq++)
+                for (var seq = oldestUnacked; PacketIo.SequenceLessThan(seq, sequence); seq++)
                     if (sendBuffer.Exists(seq))
                         sendBufferSize++;
 
@@ -164,7 +156,7 @@ namespace ReliableNetcode
         public override void SendMessage(byte[] buffer, int bufferLength)
         {
             var sendBufferSize = 0;
-            for (var seq = oldestUnacked; PacketIO.SequenceLessThan(seq, this.sequence); seq++)
+            for (var seq = oldestUnacked; PacketIo.SequenceLessThan(seq, this.sequence); seq++)
                 if (sendBuffer.Exists(seq))
                     sendBufferSize++;
 
@@ -243,10 +235,10 @@ namespace ReliableNetcode
         protected void processSendBuffer()
         {
             var numUnacked = 0;
-            for (var seq = oldestUnacked; PacketIO.SequenceLessThan(seq, sequence); seq++)
+            for (var seq = oldestUnacked; PacketIo.SequenceLessThan(seq, sequence); seq++)
                 numUnacked++;
 
-            for (var seq = oldestUnacked; PacketIO.SequenceLessThan(seq, sequence); seq++)
+            for (var seq = oldestUnacked; PacketIo.SequenceLessThan(seq, sequence); seq++)
             {
                 // never send message ID >= ( oldestUnacked + bufferSize )
                 if (seq >= oldestUnacked + 256)
@@ -334,7 +326,7 @@ namespace ReliableNetcode
             // update oldest unacked message
             var allAcked = true;
             for (var sequence = oldestUnacked;
-                sequence == this.sequence || PacketIO.SequenceLessThan(sequence, this.sequence);
+                sequence == this.sequence || PacketIo.SequenceLessThan(sequence, this.sequence);
                 sequence++) // if it's still in the send buffer, it hasn't been acked
                 if (sendBuffer.Exists(sequence))
                 {

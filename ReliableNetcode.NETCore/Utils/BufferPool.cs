@@ -3,23 +3,23 @@ using System.Collections.Generic;
 
 namespace ReliableNetcode.Utils
 {
-	/// <summary>
-	///     Helper methods for allocating temporary buffers
-	/// </summary>
-	public static class BufferPool
+    /// <summary>
+    ///     Helper methods for allocating temporary buffers
+    /// </summary>
+    internal static class BufferPool
     {
-        private static readonly Dictionary<int, Queue<byte[]>> bufferPool = new Dictionary<int, Queue<byte[]>>();
+        private static readonly Dictionary<int, Queue<byte[]>> Pool = new Dictionary<int, Queue<byte[]>>();
 
         /// <summary>
         ///     Retrieve a buffer of the given size
         /// </summary>
         public static byte[] GetBuffer(int size)
         {
-            lock (bufferPool)
+            lock (Pool)
             {
-                if (bufferPool.ContainsKey(size))
-                    if (bufferPool[size].Count > 0)
-                        return bufferPool[size].Dequeue();
+                if (Pool.ContainsKey(size))
+                    if (Pool[size].Count > 0)
+                        return Pool[size].Dequeue();
             }
 
             return new byte[size];
@@ -30,13 +30,13 @@ namespace ReliableNetcode.Utils
         /// </summary>
         public static void ReturnBuffer(byte[] buffer)
         {
-            lock (bufferPool)
+            lock (Pool)
             {
-                if (!bufferPool.ContainsKey(buffer.Length))
-                    bufferPool.Add(buffer.Length, new Queue<byte[]>());
+                if (!Pool.ContainsKey(buffer.Length))
+                    Pool.Add(buffer.Length, new Queue<byte[]>());
 
                 Array.Clear(buffer, 0, buffer.Length);
-                bufferPool[buffer.Length].Enqueue(buffer);
+                Pool[buffer.Length].Enqueue(buffer);
             }
         }
     }

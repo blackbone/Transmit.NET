@@ -14,7 +14,7 @@ namespace ReliableNetcode
         {
             config = ReliableConfig.DefaultConfig();
             config.TransmitPacketCallback = (buffer, size) => { TransmitCallback(buffer, size); };
-            config.ProcessPacketCallback = processPacket;
+            config.ProcessPacketCallback = ProcessPacket;
 
             packetController = new ReliablePacketController(config, DateTime.Now.GetTotalSeconds());
         }
@@ -40,10 +40,10 @@ namespace ReliableNetcode
             packetController.SendPacket(buffer, bufferLength, (byte) ChannelID);
         }
 
-        protected void processPacket(ushort sequence, byte[] buffer, int length)
+        private void ProcessPacket(ushort sequence, byte[] buffer, int length)
         {
             // only process a packet if it is the next packet we expect, or it is newer.
-            if (sequence == nextSequence || PacketIO.SequenceGreaterThan(sequence, nextSequence))
+            if (sequence == nextSequence || PacketIo.SequenceGreaterThan(sequence, nextSequence))
             {
                 nextSequence = (ushort) (sequence + 1);
                 ReceiveCallback(buffer, length);

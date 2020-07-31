@@ -12,30 +12,6 @@ namespace ReliableNetcode
         private readonly ReliableOrderedMessageChannel _serviceChannel;
         private readonly MessageChannel[] _messageChannels;
 
-        public uint Index = uint.MaxValue;
-
-        /// <summary>
-        ///     Approximate round-trip-time
-        /// </summary>
-        public float RTT => _serviceChannel.RTT;
-
-        /// <summary>
-        ///     Approximate packet loss
-        /// </summary>
-        public float PacketLoss => _serviceChannel.PacketLoss;
-
-        /// <summary>
-        ///     Approximate send bandwidth
-        /// </summary>
-        public float SentBandwidthKBPS => _serviceChannel.SentBandwidthKBPS;
-
-        /// <summary>
-        ///     Approximate received bandwidth
-        /// </summary>
-        public float ReceivedBandwidthKBPS => _serviceChannel.ReceivedBandwidthKBPS;
-
-        // === TO THINK ABOUT IT
-
         private double _time;
 
         /// <summary>

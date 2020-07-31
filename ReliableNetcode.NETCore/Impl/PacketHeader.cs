@@ -35,7 +35,7 @@ namespace ReliableNetcode
             if (fragmentID == 0)
             {
                 var packetHeader = BufferPool.GetBuffer(Defines.MAX_PACKET_HEADER_BYTES);
-                var headerBytes = PacketIO.WritePacketHeader(packetHeader, channelID, sequence, ack, ackBits);
+                var headerBytes = PacketIo.WritePacketHeader(packetHeader, channelID, sequence, ack, ackBits);
                 HeaderOffset = Defines.MAX_PACKET_HEADER_BYTES - headerBytes;
 
                 if (PacketDataBuffer.Length < Defines.MAX_PACKET_HEADER_BYTES + fragmentSize)

@@ -48,15 +48,15 @@ namespace ReliableNetcode
 
         public bool TestInsert(ushort sequence)
         {
-            return !PacketIO.SequenceLessThan(sequence, (ushort) (this.Sequence - Size));
+            return !PacketIo.SequenceLessThan(sequence, (ushort) (this.Sequence - Size));
         }
 
         public T Insert(ushort sequence)
         {
-            if (PacketIO.SequenceLessThan(sequence, (ushort) (this.Sequence - Size)))
+            if (PacketIo.SequenceLessThan(sequence, (ushort) (this.Sequence - Size)))
                 return null;
 
-            if (PacketIO.SequenceGreaterThan((ushort) (sequence + 1), this.Sequence))
+            if (PacketIo.SequenceGreaterThan((ushort) (sequence + 1), this.Sequence))
             {
                 RemoveEntries(this.Sequence, sequence);
                 this.Sequence = (ushort) (sequence + 1);

@@ -218,7 +218,7 @@ namespace ReliableNetcode
             }
 
             var transmitData = BufferPool.GetBuffer(16);
-            var headerBytes = PacketIO.WriteAckPacket(transmitData, channelID, ack, ackBits);
+            var headerBytes = PacketIo.WriteAckPacket(transmitData, channelID, ack, ackBits);
 
             config.TransmitPacketCallback(transmitData, headerBytes);
 
@@ -249,7 +249,7 @@ namespace ReliableNetcode
                 // regular packet
 
                 var transmitData = BufferPool.GetBuffer(2048);
-                var headerBytes = PacketIO.WritePacketHeader(transmitData, channelID, sequence, ack, ackBits);
+                var headerBytes = PacketIo.WritePacketHeader(transmitData, channelID, sequence, ack, ackBits);
                 var transmitBufferLength = length + headerBytes;
 
                 Buffer.BlockCopy(packetData, 0, transmitData, headerBytes, length);
@@ -266,7 +266,7 @@ namespace ReliableNetcode
 
                 var packetHeaderBytes = 0;
 
-                packetHeaderBytes = PacketIO.WritePacketHeader(packetHeader, channelID, sequence, ack, ackBits);
+                packetHeaderBytes = PacketIo.WritePacketHeader(packetHeader, channelID, sequence, ack, ackBits);
 
                 var numFragments = length / config.FragmentSize + (length % config.FragmentSize != 0 ? 1 : 0);
                 //int fragmentBufferSize = Defines.FRAGMENT_HEADER_BYTES + Defines.MAX_PACKET_HEADER_BYTES + config.FragmentSize;
@@ -327,7 +327,7 @@ namespace ReliableNetcode
 
                 byte channelID;
 
-                var packetHeaderBytes = PacketIO.ReadPacketHeader(packetData, 0, bufferLength, out channelID,
+                var packetHeaderBytes = PacketIo.ReadPacketHeader(packetData, 0, bufferLength, out channelID,
                     out sequence, out ack, out ackBits);
 
                 bool isStale;
@@ -403,7 +403,7 @@ namespace ReliableNetcode
 
                 byte fragmentChannelID;
 
-                var fragmentHeaderBytes = PacketIO.ReadFragmentHeader(packetData, 0, bufferLength, config.MaxFragments,
+                var fragmentHeaderBytes = PacketIo.ReadFragmentHeader(packetData, 0, bufferLength, config.MaxFragments,
                     config.FragmentSize,
                     out fragmentID, out numFragments, out fragmentBytes, out sequence, out ack, out ackBits,
                     out fragmentChannelID);

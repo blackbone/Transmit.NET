@@ -2,64 +2,63 @@
 
 namespace ReliableNetcode.Utils
 {
-    internal class ByteBuffer
+    internal sealed class ByteBuffer
     {
-        protected byte[] _buffer;
-        protected int size;
-
         public ByteBuffer()
         {
-            _buffer = null;
-            size = 0;
+            InternalBuffer = null;
+            Length = 0;
         }
 
         public ByteBuffer(int size = 0)
         {
-            _buffer = new byte[size];
-            this.size = size;
+            InternalBuffer = new byte[size];
+            this.Length = size;
         }
 
-        public int Length => size;
+        public int Length { get; private set; }
 
-        public byte[] InternalBuffer => _buffer;
+        public byte[] InternalBuffer { get; private set; }
 
         public byte this[int index]
         {
             get
             {
-                if (index < 0 || index > size) throw new IndexOutOfRangeException();
-                return _buffer[index];
+                if (index < 0 || index > Length) throw new IndexOutOfRangeException();
+
+                return InternalBuffer[index];
             }
             set
             {
-                if (index < 0 || index > size) throw new IndexOutOfRangeException();
-                _buffer[index] = value;
+                if (index < 0 || index > Length) throw new IndexOutOfRangeException();
+
+                InternalBuffer[index] = value;
             }
         }
 
         public void SetSize(int newSize)
         {
-            if (_buffer == null || _buffer.Length < newSize)
+            if (InternalBuffer == null || InternalBuffer.Length < newSize)
             {
                 var newBuffer = new byte[newSize];
 
-                if (_buffer != null)
-                    Buffer.BlockCopy(_buffer, 0, newBuffer, 0, _buffer.Length);
+                if (InternalBuffer != null)
+                    Buffer.BlockCopy(InternalBuffer, 0, newBuffer, 0, InternalBuffer.Length);
 
-                _buffer = newBuffer;
+                InternalBuffer = newBuffer;
             }
 
-            size = newSize;
+            Length = newSize;
         }
 
         public void BufferCopy(byte[] source, int src, int dest, int length)
         {
-            Buffer.BlockCopy(source, src, _buffer, dest, length);
+            Buffer.BlockCopy(source, src, InternalBuffer, dest, length);
         }
 
         public void BufferCopy(ByteBuffer source, int src, int dest, int length)
         {
-            Buffer.BlockCopy(source._buffer, src, _buffer, dest, length);
+            Buffer.BlockCopy(source.InternalBuffer, src, InternalBuffer, dest, length);
         }
     }
 }

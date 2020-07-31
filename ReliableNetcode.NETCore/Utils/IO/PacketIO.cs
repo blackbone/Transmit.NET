@@ -2,7 +2,7 @@
 
 namespace ReliableNetcode.Utils
 {
-    internal static class PacketIO
+    internal static class PacketIo
     {
         public static bool SequenceGreaterThan(ushort s1, ushort s2)
         {

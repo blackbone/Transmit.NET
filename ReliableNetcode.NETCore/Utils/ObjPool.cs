@@ -4,14 +4,14 @@ namespace ReliableNetcode.Utils
 {
     internal static class ObjPool<T> where T : new()
     {
-        private static readonly Queue<T> pool = new Queue<T>();
+        private static readonly Queue<T> Pool = new Queue<T>();
 
         public static T Get()
         {
-            lock (pool)
+            lock (Pool)
             {
-                if (pool.Count > 0)
-                    return pool.Dequeue();
+                if (Pool.Count > 0)
+                    return Pool.Dequeue();
             }
 
             return new T();
@@ -19,9 +19,9 @@ namespace ReliableNetcode.Utils
 
         public static void Return(T val)
         {
-            lock (pool)
+            lock (Pool)
             {
-                pool.Enqueue(val);
+                Pool.Enqueue(val);
             }
         }
     }

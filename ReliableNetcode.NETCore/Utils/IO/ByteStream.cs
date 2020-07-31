@@ -4,16 +4,17 @@ using System.Runtime.InteropServices;
 
 namespace ReliableNetcode.Utils
 {
+    /// <inheritdoc />
     /// <summary>
     ///     A simple stream implementation for reading/writing from/to byte arrays which can be reused
     /// </summary>
-    public class ByteStream : Stream
+    internal sealed class ByteStream : Stream
     {
-        protected byte[] srcByteArray;
+        private byte[] _srcByteArray;
 
         public override long Position { get; set; }
 
-        public override long Length => srcByteArray.Length;
+        public override long Length => _srcByteArray.Length;
 
         public override bool CanRead => true;
 
@@ -26,7 +27,7 @@ namespace ReliableNetcode.Utils
         /// </summary>
         public void SetStreamSource(byte[] sourceBuffer)
         {
-            srcByteArray = sourceBuffer;
+            _srcByteArray = sourceBuffer;
             Position = 0;
         }
 
@@ -121,7 +122,7 @@ namespace ReliableNetcode.Utils
         public float ReadSingle()
         {
             var val = ReadUInt32();
-            var union = new unionVal();
+            var union = new UnionVal();
             union.intVal = val;
 
             return union.floatVal;
@@ -130,7 +131,7 @@ namespace ReliableNetcode.Utils
         public double ReadDouble()
         {
             var val = ReadUInt64();
-            var union = new unionVal();
+            var union = new UnionVal();
             union.longVal = val;
 
             return union.doubleVal;
@@ -143,7 +144,7 @@ namespace ReliableNetcode.Utils
             var len = Length;
             for (var i = 0; i < count && pos < len; i++)
             {
-                buffer[i + offset] = srcByteArray[pos++];
+                buffer[i + offset] = _srcByteArray[pos++];
                 readBytes++;
             }
 
@@ -154,7 +155,7 @@ namespace ReliableNetcode.Utils
         public new byte ReadByte()
         {
             var pos = Position;
-            var val = srcByteArray[pos++];
+            var val = _srcByteArray[pos++];
             Position = pos;
 
             return val;
@@ -169,7 +170,7 @@ namespace ReliableNetcode.Utils
         public override void WriteByte(byte value)
         {
             var pos = Position;
-            srcByteArray[pos++] = value;
+            _srcByteArray[pos++] = value;
             Position = pos;
         }
 
@@ -260,7 +261,7 @@ namespace ReliableNetcode.Utils
 
         public void Write(float val)
         {
-            var union = new unionVal();
+            var union = new UnionVal();
             union.floatVal = val;
 
             Write(union.intVal);
@@ -268,7 +269,7 @@ namespace ReliableNetcode.Utils
 
         public void Write(double val)
         {
-            var union = new unionVal();
+            var union = new UnionVal();
             union.doubleVal = val;
 
             Write(union.longVal);
@@ -296,7 +297,7 @@ namespace ReliableNetcode.Utils
         }
 
         [StructLayout(LayoutKind.Explicit)]
-        private struct unionVal
+        private struct UnionVal
         {
             [FieldOffset(0)] public uint intVal;
 
