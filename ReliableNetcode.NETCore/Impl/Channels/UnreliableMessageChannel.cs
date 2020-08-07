@@ -37,12 +37,12 @@ namespace ReliableNetcode
             packetController.Update(newTime);
         }
 
-        public override void ReceivePacket(byte[] buffer, int bufferLength)
+        public override void ReceivePacket(ref byte[] buffer, int bufferLength)
         {
             packetController.ReceivePacket(buffer, bufferLength);
         }
 
-        public override void SendMessage(byte[] buffer, int bufferLength)
+        public override void SendMessage(ref byte[] buffer, int bufferLength)
         {
             packetController.SendPacket(buffer, bufferLength, (byte) ChannelID);
         }

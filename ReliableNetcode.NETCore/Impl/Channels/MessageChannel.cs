@@ -7,6 +7,8 @@ namespace ReliableNetcode
      */
     internal abstract class MessageChannel
     {
+        private readonly ITransportChannel _transportChannel;
+
         public Action<byte[], int> ReceiveCallback;
         public Action<byte[], int> TransmitCallback;
         protected int ChannelID { get; }
@@ -20,8 +22,8 @@ namespace ReliableNetcode
 
         public abstract void Reset();
         public abstract void Update(double newTime);
-        public abstract void ReceivePacket(byte[] buffer, int bufferLength);
-        public abstract void SendMessage(byte[] buffer, int bufferLength);
+        public abstract void ReceivePacket(ref byte[] buffer, int bufferLength);
+        public abstract void SendMessage(ref byte[] buffer, int bufferLength);
     }
 
     // an unreliable implementation of MessageChannel

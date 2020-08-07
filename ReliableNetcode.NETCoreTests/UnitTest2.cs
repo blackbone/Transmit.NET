@@ -30,14 +30,20 @@ namespace UnitTestProject1
         [TestCase]
         public async Task StartEndpoint()
         {
-            var ep1 = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 10001);
-            var ep2 = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 10002);
+            var ep1 = new IPEndPoint(IPAddress.Any, 10001);
+            var ep2 = new IPEndPoint(IPAddress.Any, 10002);
 
             ITransportChannel sock1 = new SocketTransport(ep1, ep2);
             ITransportChannel sock2 = new SocketTransport(ep2, ep1);
 
-            var rep1 = new ReliableEndpoint(sock1, QosType.Reliable, QosType.Unreliable, QosType.UnreliableOrdered);
-            var rep2 = new ReliableEndpoint(sock2, QosType.Reliable, QosType.Unreliable, QosType.UnreliableOrdered);
+            var rep1 = new ReliableEndpoint(sock1,
+                QosType.Reliable,
+                QosType.Unreliable,
+                QosType.UnreliableOrdered);
+            var rep2 = new ReliableEndpoint(sock2,
+                QosType.Reliable,
+                QosType.Unreliable,
+                QosType.UnreliableOrdered);
         }
 
         private class SocketTransport : ITransportChannel

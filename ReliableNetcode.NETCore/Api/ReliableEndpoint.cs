@@ -32,7 +32,6 @@ namespace ReliableNetcode
 
             _time = DateTime.Now.GetTotalSeconds();
             _messageChannels = MessageChannelFactory.CreateChannels(passConfig);
-            _messageChannels[0] = _serviceChannel = new ReliableOrderedMessageChannel(0);
 
             for (int i = 0; i < len; ++i)
             {
@@ -87,7 +86,7 @@ namespace ReliableNetcode
         public void ReceivePacket(byte[] buffer, int bufferLength)
         {
             int channel = buffer[1];
-            _messageChannels[channel].ReceivePacket(buffer, bufferLength);
+            _messageChannels[channel].ReceivePacket(ref buffer, bufferLength);
         }
 
         /// <summary>
@@ -95,7 +94,8 @@ namespace ReliableNetcode
         /// </summary>
         public void SendMessage(byte[] buffer, int bufferLength, int channelId)
         {
-            _messageChannels[channelId].SendMessage(buffer, bufferLength);
+            _messageChannels[channelId].SendMessage(ref buffer, bufferLength);
+            
         }
     }
 }

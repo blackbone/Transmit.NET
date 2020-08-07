@@ -90,7 +90,8 @@ namespace ReliableNetcode
                 if (sendBufferSize < sendBuffer.Size)
                 {
                     var message = messageQueue.Dequeue();
-                    SendMessage(message.InternalBuffer, message.Length);
+                    var messageInternalBuffer = message.InternalBuffer;
+                    SendMessage(ref messageInternalBuffer, message.Length);
                     ObjPool<ByteBuffer>.Return(message);
                 }
             }
@@ -148,12 +149,12 @@ namespace ReliableNetcode
             }
         }
 
-        public override void ReceivePacket(byte[] buffer, int bufferLength)
+        public override void ReceivePacket(ref byte[] buffer, int bufferLength)
         {
             packetController.ReceivePacket(buffer, bufferLength);
         }
 
-        public override void SendMessage(byte[] buffer, int bufferLength)
+        public override void SendMessage(ref byte[] buffer, int bufferLength)
         {
             var sendBufferSize = 0;
             for (var seq = oldestUnacked; PacketIo.SequenceLessThan(seq, this.sequence); seq++)
