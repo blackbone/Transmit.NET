@@ -1,6 +1,6 @@
-﻿using ReliableNetcode.Utils;
+﻿using Transmit.Utils;
 
-namespace ReliableNetcode
+namespace Transmit
 {
     internal sealed class SequenceBuffer<T> where T : class, new()
     {

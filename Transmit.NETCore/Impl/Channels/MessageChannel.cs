@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ReliableNetcode
+namespace Transmit
 {
     /*
      * abstract base for any message channel

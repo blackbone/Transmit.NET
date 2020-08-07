@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ReliableNetcode
+namespace Transmit
 {
     internal static class MessageChannelFactory
     {

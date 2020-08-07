@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace ReliableNetcode
+namespace Transmit
 {
     public interface ITransportChannel
     {

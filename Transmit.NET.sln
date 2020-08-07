@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReliableNetcode.NETCore", "ReliableNetcode.NETCore\ReliableNetcode.NETCore.csproj", "{5329304B-1E2F-482A-BC03-6DA43FCDA916}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transmit.NETCore", "Transmit.NETCore\Transmit.NETCore.csproj", "{5329304B-1E2F-482A-BC03-6DA43FCDA916}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReliableNetcode.NETCoreTests", "ReliableNetcode.NETCoreTests\ReliableNetcode.NETCoreTests.csproj", "{E27FC1F9-CB8B-4A47-AE3C-E8D28D5D0381}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transmit.NETCoreTests", "Transmit.NETCoreTests\Transmit.NETCoreTests.csproj", "{E27FC1F9-CB8B-4A47-AE3C-E8D28D5D0381}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

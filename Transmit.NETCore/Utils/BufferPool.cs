@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ReliableNetcode.Utils
+namespace Transmit.Utils
 {
     /// <summary>
     ///     Helper methods for allocating temporary buffers

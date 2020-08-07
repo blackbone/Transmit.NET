@@ -1,7 +1,7 @@
 ﻿using System;
-using ReliableNetcode.Utils;
+using Transmit.Utils;
 
-namespace ReliableNetcode
+namespace Transmit
 {
     /// <summary>
     ///     Main class for routing messages through QoS channels

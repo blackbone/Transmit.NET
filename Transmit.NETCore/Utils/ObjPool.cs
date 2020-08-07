@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ReliableNetcode.Utils
+namespace Transmit.Utils
 {
     internal static class ObjPool<T> where T : new()
     {

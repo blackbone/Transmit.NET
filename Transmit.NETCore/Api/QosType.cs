@@ -1,4 +1,4 @@
-﻿namespace ReliableNetcode
+﻿namespace Transmit
 {
     /// <summary>
     ///     Quality-of-service type for a message

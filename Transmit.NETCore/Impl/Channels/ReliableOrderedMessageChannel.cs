@@ -1,4 +1,4 @@
-namespace ReliableNetcode
+namespace Transmit
 {
     internal sealed class ReliableOrderedMessageChannel : MessageChannel
     {

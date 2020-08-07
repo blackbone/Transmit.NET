@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 
-namespace ReliableNetcode.Packets
+namespace Transmit.Packets
 {
     public static class Packet
     {

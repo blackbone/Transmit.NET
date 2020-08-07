@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ReliableNetcode.Utils
+namespace Transmit.Utils
 {
     internal sealed class ByteBuffer
     {

@@ -1,4 +1,4 @@
-﻿namespace ReliableNetcode.Utils
+﻿namespace Transmit.Utils
 {
     internal static class Defines
     {

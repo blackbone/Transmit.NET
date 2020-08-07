@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using ReliableNetcode.Utils;
+using Transmit.Utils;
 
-namespace ReliableNetcode
+namespace Transmit
 {
     internal sealed class ReliableMessageChannel : MessageChannel
     {

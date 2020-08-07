@@ -2,7 +2,7 @@
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace ReliableNetcode.Utils
+namespace Transmit.Utils
 {
     /// <inheritdoc />
     /// <summary>
