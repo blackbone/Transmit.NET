@@ -8,7 +8,7 @@ using Transmit;
 namespace UnitTestProject1
 {
     [TestFixture]
-    public class UnitTest2
+    public class UnitTests
     {
         [TestCase]
         public async Task StartSocket()
@@ -44,6 +44,31 @@ namespace UnitTestProject1
                 QosType.Reliable,
                 QosType.Unreliable,
                 QosType.UnreliableOrdered);
+
+            sock1.Close();
+            sock2.Close();
+        }
+
+        [TestCase]
+        public async Task SendBytes()
+        {
+            var ep1 = new IPEndPoint(IPAddress.Any, 10001);
+            var ep2 = new IPEndPoint(IPAddress.Any, 10002);
+
+            ITransportChannel sock1 = new SocketTransport(ep1, ep2);
+            ITransportChannel sock2 = new SocketTransport(ep2, ep1);
+
+            var rep1 = new ReliableEndpoint(sock1,
+                QosType.Reliable,
+                QosType.Unreliable,
+                QosType.UnreliableOrdered);
+            var rep2 = new ReliableEndpoint(sock2,
+                QosType.Reliable,
+                QosType.Unreliable,
+                QosType.UnreliableOrdered);
+            
+            sock1.Close();
+            sock2.Close();
         }
 
         private class SocketTransport : ITransportChannel

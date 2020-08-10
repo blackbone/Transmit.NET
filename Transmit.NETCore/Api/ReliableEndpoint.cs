@@ -6,7 +6,7 @@ namespace Transmit
     /// <summary>
     ///     Main class for routing messages through QoS channels
     /// </summary>
-    public class ReliableEndpoint
+    public sealed class ReliableEndpoint
     {
         private readonly ITransportChannel _transportChannel;
         private readonly ReliableOrderedMessageChannel _serviceChannel;
@@ -95,7 +95,6 @@ namespace Transmit
         public void SendMessage(byte[] buffer, int bufferLength, int channelId)
         {
             _messageChannels[channelId].SendMessage(ref buffer, bufferLength);
-            
         }
     }
 }
